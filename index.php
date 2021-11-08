@@ -5,6 +5,8 @@ require_once("connection.php");
 $query="select * from barang" ;
 $result=mysqli_query($mysqli,$query);
 
+//mengecek dan endapatkan data session
+require_once("session_check.php")
 
 ?>
 
@@ -44,11 +46,23 @@ $result=mysqli_query($mysqli,$query);
                     </button>
 
                 <!-- Navbar collapse -->
-                <div class="collapse navbar-collapse" id="navbarSupporteedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Daftar barang</a>
-                        </li>
+                            <a class="nav-link" aria-current="page" href="index.php"></a>
+                            </li>
+
+                        <?php if($sessionStatus == false) : ?>
+                            <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="login.php">Login</a>
+                            </li>
+
+                        <?php else : ?>
+                            <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="logout.php">Logout</a>
+                            </li>
+
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -56,13 +70,14 @@ $result=mysqli_query($mysqli,$query);
 
         <div id="student-list">
             <div class="container">
+                <?php if($sessionStatus) : ?>
                 <div class="row mb-4 mt-4">
                     <div class="col">
                         <h2>Daftar barang</h2>
                     </div>
 
                     <div class="col text-end">
-                        <a class="btn btn-primary" href="form_barang.html" role="button">Tambah barang</a>
+                        <a class="btn btn-primary" href="form_barang.php" role="button">Tambah barang</a>
                     </div>
                 </div>
 
@@ -80,7 +95,7 @@ $result=mysqli_query($mysqli,$query);
                             </thead>
                             <tbody>
                                 <?php
-                                $i=0;
+                                $i = 1;
                                 foreach($result as $barang){
 
                                     echo '<tr>
@@ -88,14 +103,24 @@ $result=mysqli_query($mysqli,$query);
                                     <td>' . $barang["Id_barang"] . '</td>
                                     <td>' . $barang["nama_barang"] . '</td>
                                     <td>' . $barang["harga"] . '</td>
+                                    <td>
+                                    <a href="form_barang.php?Id_barang=' . $barang["Id_barang"] . '">edit</a>
+                                    <a href="delete.php?Id_barang=' . $barang["Id_barang"] . '" onclick="return confirm_delete()">Delete</a>
+                                    </td>
                                 </tr>';
                                 }
-                                
                                 ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <?php else : ?>
+                <div class="row">
+                    <div class="col">
+                        <h2>Login terlebih dahulu!</h2>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </body>

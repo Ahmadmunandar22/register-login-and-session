@@ -1,3 +1,14 @@
+<?php
+
+// panggil file session check
+require_once("session_check.php");
+
+// cek apakah petugas telah login
+if($sessionStatus == false) {
+    header("location:index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
